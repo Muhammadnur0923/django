@@ -1,0 +1,70 @@
+<aside class="sidebar">
+
+    <!-- ===== CATEGORIES ===== -->
+    <div class="sidebar-box">
+
+        <div class="sidebar-head">
+            Kategoriyalar
+        </div>
+
+        <a href="{% url 'index' %}"
+           class="side-cat-link {% if not current_category %}active{% endif %}">
+
+            📰 Barcha maqolalar
+        </a>
+
+        {% for category in categories %}
+        <a href="{% url 'category' category.id %}"
+           class="side-cat-link {% if current_category and current_category.id == category.id %}active{% endif %}">
+
+            <span>{{ category.title }}</span>
+            <span class="cat-count">{{ category.article_set.count }}</span>
+
+        </a>
+        {% endfor %}
+
+    </div>
+
+
+    <!-- ===== LATEST NEWS ===== -->
+    <div class="sidebar-box">
+
+        <div class="sidebar-head">
+            So‘nggi yangiliklar
+        </div>
+
+        {% for art in latest_articles|slice:":5" %}
+
+        <a href="{% url 'article_detail' art.id %}" class="mini-art">
+
+            {% if art.photo %}
+                <img src="{{ art.photo.url }}" alt="{{ art.title }}">
+            {% else %}
+                <div class="mini-noimg">📰</div>
+            {% endif %}
+
+            <div class="mini-content">
+                <div class="mini-title">
+                    {{ art.title|truncatewords:6 }}
+                </div>
+                <div class="mini-date">
+                    {{ art.created_at|date:"d M Y" }}
+                </div>
+            </div>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- ===== ADS ===== -->
+    <div class="sidebar-ad">
+
+        <div class="ad-icon">📢</div>
+        <div class="ad-text">Reklama joyi</div>
+
+    </div>
+
+</aside>
